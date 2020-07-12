@@ -6,7 +6,7 @@ FORCE:
 
 view:
 	cd target/mdoc ; make
-	xdg-open target/mdoc/Session.html
+	xdg-open target/mdoc/Session.pdf &
 
 edit:
 	emacs Makefile *.md *.sbt docs/*.md &

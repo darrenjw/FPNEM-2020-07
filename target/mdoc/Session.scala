@@ -42,6 +42,7 @@ pairsF(4)
 
 pairs _
 
+
 def pair[A](a1: A, a2: A): (A, A) = (a1, a2)
 
 pair(1, 2)
@@ -58,6 +59,8 @@ l.tail
 l(1)
 0 :: l
 l ++ l
+
+
 (1 to 10).toList
 (0 until 10).toList
 val v = Vector(1, 2, 3, 4)
@@ -98,8 +101,6 @@ def logFact(n: Int, acc: Double = 0.0): Double =
     if (n <= 1) acc else logFact(n-1, math.log(n) + acc)
 
 logFact(10000)
-logFact(100000)
-logFact(1000000)
 logFact(10000000)
 
 
@@ -115,7 +116,8 @@ val triangular = naturals.scanLeft(0)(_ + _).drop(1)
 triangular.take(8).toList
 
 
-def fib(a: Int = 1, b: Int = 1): Stream[Int] = a #:: fib(b, a+b)
+def fib(a: Int = 1, b: Int = 1): Stream[Int] =
+    a #:: fib(b, a+b)
 
 
 fib().take(8).toList
@@ -129,6 +131,7 @@ import cats.syntax._
 "foo" |+| "bar"
 List(1, 2) |+| List(3, 4, 5)
 Map("a" -> 1, "b" -> 2) |+| Map("b" -> 3, "c" -> 4)
+
 
 def combineAll[A: Monoid](la: List[A]): A = la match {
     case Nil => implicitly[Monoid[A]].empty

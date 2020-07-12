@@ -17,9 +17,9 @@ Materials for "An evening of Scala" at the FPNE Meetup for July 2020
 ## Tonight's interactive session
 
 * [Markdown document](target/mdoc/Session.md) - read along
+* [PDF slides](target/mdoc/Session.pdf) - read along
 * [mdoc markdown source document](docs/Session.md) - the source [mdoc](https://scalameta.org/mdoc/) document
 * [Scala code](target/mdoc/Session.scala) - Scala code extracted from the markdown doc
-
 
 
 ## Courses
