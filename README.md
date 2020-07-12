@@ -1,6 +1,6 @@
 # FPNEM-2020-07
 
-Materials for "An evening of Scala" at the FPNE Meetup for July 2020
+Materials for "An evening of Scala" at the [FPNE Meetup](https://www.meetup.com/fpnortheast/) for July 2020
 
 ## Some links
 
@@ -18,7 +18,7 @@ Materials for "An evening of Scala" at the FPNE Meetup for July 2020
 
 ### Setup
 
-The material for the session are given below. To follow along, most of the examples can be easily replicated using [Scastie](https://scastie.scala-lang.org) in the browser (in *worksheet* mode). Or better, clone this repo and run `sbt console` from *this* directory. You will get a REPL with everything pre-configured.
+The material for the session are given below. To follow along, most of the examples can be easily replicated using [Scastie](https://scastie.scala-lang.org) in the browser (in *worksheet* mode). Or better, if you have `sbt` (which can be installed via the link above), clone this repo and run `sbt console` from *this* directory. You will get a REPL with everything pre-configured ready to go.
 
 ### Materials
 
@@ -32,10 +32,8 @@ The material for the session are given below. To follow along, most of the examp
 * If you haven't been following along, maybe now would be a good time to reproduce the examples in a Scala REPL.
 * To learn more, [Scala exercises](https://www.scala-exercises.org/) is a fast way to start getting to grips with the [standard library](https://www.scala-exercises.org/std_lib/), or commonly used libraries such as [cats](https://www.scala-exercises.org/cats/) or [monocle](https://www.scala-exercises.org/monocle/). 
 
-## Courses
+## My Scala courses
 
-* [Scala for statistical computing and data science](https://github.com/darrenjw/scala-course) - online course with all materials available
-* [Category theory for pure functional programming in Scala](https://github.com/darrenjw/fps-course) - price on application!
+* [Scala for statistical computing and data science](https://github.com/darrenjw/scala-course) - aimed at statisticians and data scientists transitioning to Scala from R or Python - all essential materials freely available
+* [Category theory for pure functional programming in Scala](https://github.com/darrenjw/fps-course) - a course for experienced Scala developers wanting to adopt a more principled, functional programing style
 
-
-#### eof
