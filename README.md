@@ -18,12 +18,14 @@ Materials for "An evening of Scala" at the FPNE Meetup for July 2020
 
 * [Markdown document](target/mdoc/Session.md) - read along
 * [mdoc markdown source document](docs/Session.md) - the source [mdoc](https://scalameta.org/mdoc/) document
-* [Extracted Scala source code](target/mdoc/Session.scala) - extracted Scala code
+* [Scala code](target/mdoc/Session.scala) - Scala code extracted from the markdown doc
 
 
 
 ## Courses
 
-* 
+* [Scala for statistical computing and data science](https://github.com/darrenjw/scala-course) - online course with all materials available
+* [Category theory for pure functional programming in Scala](https://github.com/darrenjw/fps-course) - price on application!
+
 
 #### eof
