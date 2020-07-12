@@ -85,7 +85,7 @@ pair("foo", "bar")
 pair[Double] _
 // res14: (Double, Double) => (Double, Double) = <function2>
 (pair[Double] _).curried
-// res15: Double => Double => (Double, Double) = scala.Function2$$Lambda$5589/1574106187@27b0b26f
+// res15: Double => Double => (Double, Double) = scala.Function2$$Lambda$5621/1896262314@5f636505
 ```
 The return type of a method or function can usually be inferred, but it is usually considered good practice to declare it.
 
@@ -202,22 +202,48 @@ logFact(10000000)
 ```
 Note that the `tailrec` annotation is optional - the compiler will eliminate the tail call regardless of whether it is specified. The annotation ensures that an error will be thrown at compile time in the event that for some reason the compiler can not eliminate the tail call. This is typically better than discovering this fact at run time.
 
+## Streams
+
+The Scala standard library includes a `Stream` type that is just a lazy list. There are quite a few limitations of such a stream, and the type is actually deprecated in the latest versions of Scala. There are many better stream types provided by other libraries (such a [monix](https://monix.io/) and [fs2](https://fs2.io/)), but the simple built-in type is good enough to illustrate some of the basic concepts.
+```scala
+val naturals = Stream.iterate(1)(_ + 1)
+```
+```scala
+naturals.take(8).toList
+// res43: List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8)
+```
+```scala
+val triangular = naturals.scanLeft(0)(_ + _).drop(1)
+```
+```scala
+triangular.take(8).toList
+// res44: List[Int] = List(1, 3, 6, 10, 15, 21, 28, 36)
+```
+```scala
+def fib(a: Int = 1, b: Int = 1): Stream[Int] = a #:: fib(b, a+b)
+```
+```scala
+fib().take(8).toList
+// res45: List[Int] = List(1, 1, 2, 3, 5, 8, 13, 21)
+```
+
+
 ## Type classes
 
-Scala supports a very powerful (but dangerous) programming feature allowing values and classes to be passed into functions and otherwise "summoned" *implicitly*. There are many potential applications of *implicits*, but in Scala 2 they are often used to support the *type class* programming pattern, popularised by Haskell. Note that Scala 3 ("dotty") provides more direct support for the type class pattern. The [cats](https://typelevel.org/cats/) library provides the standard type classes from category theory, together with instance definitions for types in the standard library, and convenient syntax. eg. The *monoid* typeclass is very useful and commonly used, and comes with the syntax `|+|` for the associative combine operation.
+Scala supports a very powerful (but dangerous) programming feature allowing values and classes to be passed into functions and otherwise "summoned" *implicitly*. There are many potential applications of *implicits*, but in Scala 2 they are often used to support the *type class* programming pattern, popularised by Haskell. Note that Scala 3 ("dotty") provides more direct support for the type class pattern. The [Cats](https://typelevel.org/cats/) library provides the standard type classes from category theory, together with instance definitions for types in the standard library, and convenient syntax. eg. The *monoid* typeclass is very useful and commonly used, and comes with the syntax `|+|` for the associative combine operation.
 ```scala
 import cats._
 import cats.implicits._
 import cats.syntax._
 
 3 |+| 4
-// res43: Int = 7
+// res46: Int = 7
 "foo" |+| "bar"
-// res44: String = "foobar"
+// res47: String = "foobar"
 List(1, 2) |+| List(3, 4, 5)
-// res45: List[Int] = List(1, 2, 3, 4, 5)
+// res48: List[Int] = List(1, 2, 3, 4, 5)
 Map("a" -> 1, "b" -> 2) |+| Map("b" -> 3, "c" -> 4)
-// res46: Map[String, Int] = Map("b" -> 5, "c" -> 4, "a" -> 1)
+// res49: Map[String, Int] = Map("b" -> 5, "c" -> 4, "a" -> 1)
 
 def combineAll[A: Monoid](la: List[A]): A = la match {
     case Nil => implicitly[Monoid[A]].empty
@@ -225,9 +251,9 @@ def combineAll[A: Monoid](la: List[A]): A = la match {
 }
 
 combineAll(List(2, 3, 4))
-// res47: Int = 9
+// res50: Int = 9
 combineAll(List("foo", "bar"))
-// res48: String = "foobar"
+// res51: String = "foobar"
 ```
 Defining a type class like `Monoid` in a language like Scala requires parameterised types (generics). Defining parameterised type classes requires parameterised types that are themselves parameterised - higher kinded types (HKTs). Very few mainstream programming languages support HKTs, but Scala is one of them. These can be used to define type classes like `Functor` and `Monad`.
 ```scala
@@ -235,17 +261,12 @@ def doubleAll[F[_]: Functor](fi: F[Int]): F[Int] =
     fi map (_ * 2)
 
 doubleAll(List(1, 2, 3))
-// res49: List[Int] = List(2, 4, 6)
+// res52: List[Int] = List(2, 4, 6)
 doubleAll(Vector(2, 3, 4))
-// res50: Vector[Int] = Vector(4, 6, 8)
+// res53: Vector[Int] = Vector(4, 6, 8)
 doubleAll(Option(3))
-// res51: Option[Int] = Some(6)
+// res54: Option[Int] = Some(6)
 ```
+Parameterising functions this way ensures that you don't use any idiosyncratic feature of the particular container type that is being used, and will render trivial the switching of the container type in some later refactor of the code.
 
-
-* Streams?
-* Look at my FPS notes for inspiration...
-
-* SBT - console
-* Scastie?? Scala in the browser thing? Scala tutorials, intros, exercises, etc.
 

@@ -136,9 +136,32 @@ logFact(10000000)
 ```
 Note that the `tailrec` annotation is optional - the compiler will eliminate the tail call regardless of whether it is specified. The annotation ensures that an error will be thrown at compile time in the event that for some reason the compiler can not eliminate the tail call. This is typically better than discovering this fact at run time.
 
+## Streams
+
+The Scala standard library includes a `Stream` type that is just a lazy list. There are quite a few limitations of such a stream, and the type is actually deprecated in the latest versions of Scala. There are many better stream types provided by other libraries (such a [monix](https://monix.io/) and [fs2](https://fs2.io/)), but the simple built-in type is good enough to illustrate some of the basic concepts.
+```scala mdoc:silent
+val naturals = Stream.iterate(1)(_ + 1)
+```
+```scala mdoc
+naturals.take(8).toList
+```
+```scala mdoc:silent
+val triangular = naturals.scanLeft(0)(_ + _).drop(1)
+```
+```scala mdoc
+triangular.take(8).toList
+```
+```scala mdoc:silent
+def fib(a: Int = 1, b: Int = 1): Stream[Int] = a #:: fib(b, a+b)
+```
+```scala mdoc
+fib().take(8).toList
+```
+
+
 ## Type classes
 
-Scala supports a very powerful (but dangerous) programming feature allowing values and classes to be passed into functions and otherwise "summoned" *implicitly*. There are many potential applications of *implicits*, but in Scala 2 they are often used to support the *type class* programming pattern, popularised by Haskell. Note that Scala 3 ("dotty") provides more direct support for the type class pattern. The [cats](https://typelevel.org/cats/) library provides the standard type classes from category theory, together with instance definitions for types in the standard library, and convenient syntax. eg. The *monoid* typeclass is very useful and commonly used, and comes with the syntax `|+|` for the associative combine operation.
+Scala supports a very powerful (but dangerous) programming feature allowing values and classes to be passed into functions and otherwise "summoned" *implicitly*. There are many potential applications of *implicits*, but in Scala 2 they are often used to support the *type class* programming pattern, popularised by Haskell. Note that Scala 3 ("dotty") provides more direct support for the type class pattern. The [Cats](https://typelevel.org/cats/) library provides the standard type classes from category theory, together with instance definitions for types in the standard library, and convenient syntax. eg. The *monoid* typeclass is very useful and commonly used, and comes with the syntax `|+|` for the associative combine operation.
 ```scala mdoc
 import cats._
 import cats.implicits._
@@ -166,11 +189,6 @@ doubleAll(List(1, 2, 3))
 doubleAll(Vector(2, 3, 4))
 doubleAll(Option(3))
 ```
+Parameterising functions this way ensures that you don't use any idiosyncratic feature of the particular container type that is being used, and will render trivial the switching of the container type in some later refactor of the code.
 
-
-* Streams?
-* Look at my FPS notes for inspiration...
-
-* SBT - console
-* Scastie?? Scala in the browser thing? Scala tutorials, intros, exercises, etc.
 
