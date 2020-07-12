@@ -1,10 +1,12 @@
 # Makefile
 
-TARGETS=Session.html
+TARGETS=Session.html Session.scala
 
 FORCE:
 	make $(TARGETS)
 
+%.scala: %.md
+	cat $< | sed -n '/^```scala/,/^```/ p' | sed '/^\/\/ /d' | sed 's|^```scala||g' | sed 's|^```||g'  > $@
 
 %.html: %.md
 	pandoc -t html5 $< -o $@
