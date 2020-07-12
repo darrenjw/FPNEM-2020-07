@@ -1,5 +1,7 @@
 # An evening of Scala
 
+## Classes, objects and values
+
 Scala has mutable variables and immutable values, and optional type inference.
 ```scala
 var v = 5
@@ -17,7 +19,7 @@ val y: Double = 2.5
 y
 // res3: Double = 2.5
 ```
-Scala is often described as an object-functional hybrid language. Case classes are a nice lightweight way of representing product data types.
+Scala is often described as an object-functional hybrid language. Case classes are a nice lightweight way of representing *product data types*.
 ```scala
 case class Person(name: String, age: Int)
 val p1 = Person("Fred", 25)
@@ -27,7 +29,7 @@ p1
 p1.name
 // res5: String = "Fred"
 ```
-Sealed traits can model sum types.
+Sealed traits can model *sum types*.
 ```scala
 sealed trait Pet {
   val name: String
@@ -36,6 +38,214 @@ sealed trait Pet {
 case class Cat(name: String, age: Int) extends Pet
 case class Dog(name: String, age: Int) extends Pet
 
-Cat("Garfield", 20)
+val c = Cat("Garfield", 20)
+// c: Cat = Cat("Garfield", 20)
 Dog("Scooby", 10)
+// res6: Dog = Dog("Scooby", 10)
 ```
+Note that by default, case class attributes are immutable.
+
+Scala has reasonably sophisticated support for *pattern-matching*, and case classes are often used in conjunction with pattern-matching.
+```scala
+def petString(p: Pet): String = p match {
+	case Cat(n, _) => "A cat named " + n
+	case Dog(n, _) => "A dog named " + n
+}
+
+petString(c)
+// res7: String = "A cat named Garfield"
+```
+If a trait is declared `sealed`, then all cases must be defined in the same source file, and incomplete pattern matches will trigger a compiler warning.
+
+## Methods and functions
+
+Scala makes a distinction between *methods*, declared using `def`, which is code associated with a particular class or object, and *functions* which are values having a function type. Methods can be converted to functions (sometimes transparently, but sometimes using an `_`). Methods can be type-polymorphic, whereas functions must have an explicit function type.
+```scala
+def pairs(n: Int): Int = n*(n-1)/2
+pairs(4)
+// res8: Int = 6
+
+val pairsF: Int => Int = n => n*(n-1)/2
+// pairsF: Int => Int = <function1>
+pairsF(4)
+// res9: Int = 6
+
+pairs _
+// res10: Int => Int = <function1>
+
+def pair[A](a1: A, a2: A): (A, A) = (a1, a2)
+
+pair(1, 2)
+// res11: (Int, Int) = (1, 2)
+pair[Int](2, 3)
+// res12: (Int, Int) = (2, 3)
+pair("foo", "bar")
+// res13: (String, String) = ("foo", "bar")
+
+pair[Double] _
+// res14: (Double, Double) => (Double, Double) = <function2>
+(pair[Double] _).curried
+// res15: Double => Double => (Double, Double) = scala.Function2$$Lambda$5589/1574106187@27b0b26f
+```
+The return type of a method or function can usually be inferred, but it is usually considered good practice to declare it.
+
+Since functions are just values, they can be passed around like any other value. Scala therefore supports *higher-order functions* - functions which either accept a function as an argument or return a function as a result (or both). HoFs are very often used in conjunction with collections.
+
+## Collections
+
+Scala has a wide array of collection types, both mutable and immutable, but immutable by default.
+```scala
+val l = List(1, 2, 3)
+// l: List[Int] = List(1, 2, 3)
+l.head
+// res17: Int = 1
+l.tail
+// res18: List[Int] = List(2, 3)
+l(1)
+// res19: Int = 2
+0 :: l
+// res20: List[Int] = List(0, 1, 2, 3)
+l ++ l
+// res21: List[Int] = List(1, 2, 3, 1, 2, 3)
+(1 to 10).toList
+// res22: List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+(0 until 10).toList
+// res23: List[Int] = List(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+val v = Vector(1, 2, 3, 4)
+// v: Vector[Int] = Vector(1, 2, 3, 4)
+val v2 = v.updated(2, 5)
+// v2: Vector[Int] = Vector(1, 2, 5, 4)
+v2
+// res24: Vector[Int] = Vector(1, 2, 5, 4)
+v
+// res25: Vector[Int] = Vector(1, 2, 3, 4)
+```
+`List` has good *push* and *pop* performance, but `Vector` is an immutable data structure with better random access and update performance. The collections are *monadic*, supporting HoFs such as `map` and `flatMap` (called `bind` or `>>=` in Haskell).
+```scala
+v map (x => x*2)
+// res26: Vector[Int] = Vector(2, 4, 6, 8)
+v.map(x => x.toDouble)
+// res27: Vector[Double] = Vector(1.0, 2.0, 3.0, 4.0)
+v flatMap {x => Vector(x, x+1)}
+// res28: Vector[Int] = Vector(1, 2, 2, 3, 3, 4, 4, 5)
+```
+Scala has `for`-expressions (similar to Haskell's `do`-notation) for writing pure functional monadic expressions in an imperative style.
+```scala
+for {
+  vi <- v
+  vj <- v
+} yield (vi, vj)
+// res29: Vector[(Int, Int)] = Vector(
+//   (1, 1),
+//   (1, 2),
+//   (1, 3),
+//   (1, 4),
+//   (2, 1),
+//   (2, 2),
+//   (2, 3),
+//   (2, 4),
+//   (3, 1),
+//   (3, 2),
+//   (3, 3),
+//   (3, 4),
+//   (4, 1),
+//   (4, 2),
+//   (4, 3),
+//   (4, 4)
+// )
+```
+The collections also support *scans*, *folds* and *reductions*.
+```scala
+v reduce (_ + _)
+// res30: Int = 10
+v reduce (_ * _)
+// res31: Int = 24
+v.foldLeft(0)(_ + _)
+// res32: Int = 10
+v.scanLeft(0)(_ + _)
+// res33: Vector[Int] = Vector(0, 1, 3, 6, 10)
+v.foldLeft(0.0)(_ + _)
+// res34: Double = 10.0
+```
+
+## Recursion
+
+Scala methods and functions can be recursive, though in this case, the return type must be provided.
+
+```scala
+def logFactorial(n: Int): Double =
+	if (n <= 1) 0.0 else math.log(n)+logFactorial(n-1)
+
+logFactorial(4)
+// res35: Double = 3.1780538303479453
+logFactorial(100)
+// res36: Double = 363.7393755555636
+logFactorial(1000)
+// res37: Double = 5912.128178488171
+logFactorial(10000)
+// res38: Double = 82108.92783681415
+```
+Eventually this will blow the stack, since it is not tail-recursive (the function modifies the result of the recursive call). The compiler recognises tail-recursions, and performs tail call elimination.
+```scala
+@annotation.tailrec final 
+def logFact(n: Int, acc: Double = 0.0): Double =
+    if (n <= 1) acc else logFact(n-1, math.log(n) + acc)
+
+logFact(10000)
+// res39: Double = 82108.92783681446
+logFact(100000)
+// res40: Double = 1051299.221899134
+logFact(1000000)
+// res41: Double = 1.2815518384658003E7
+logFact(10000000)
+// res42: Double = 1.511809654875759E8
+```
+Note that the `tailrec` annotation is optional - the compiler will eliminate the tail call regardless of whether it is specified. The annotation ensures that an error will be thrown at compile time in the event that for some reason the compiler can not eliminate the tail call. This is typically better than discovering this fact at run time.
+
+## Type classes
+
+Scala supports a very powerful (but dangerous) programming feature allowing values and classes to be passed into functions and otherwise "summoned" *implicitly*. There are many potential applications of *implicits*, but in Scala 2 they are often used to support the *type class* programming pattern, popularised by Haskell. Note that Scala 3 ("dotty") provides more direct support for the type class pattern. The [cats](https://typelevel.org/cats/) library provides the standard type classes from category theory, together with instance definitions for types in the standard library, and convenient syntax. eg. The *monoid* typeclass is very useful and commonly used, and comes with the syntax `|+|` for the associative combine operation.
+```scala
+import cats._
+import cats.implicits._
+import cats.syntax._
+
+3 |+| 4
+// res43: Int = 7
+"foo" |+| "bar"
+// res44: String = "foobar"
+List(1, 2) |+| List(3, 4, 5)
+// res45: List[Int] = List(1, 2, 3, 4, 5)
+Map("a" -> 1, "b" -> 2) |+| Map("b" -> 3, "c" -> 4)
+// res46: Map[String, Int] = Map("b" -> 5, "c" -> 4, "a" -> 1)
+
+def combineAll[A: Monoid](la: List[A]): A = la match {
+    case Nil => implicitly[Monoid[A]].empty
+	case x :: xs => x |+| combineAll(xs)
+}
+
+combineAll(List(2, 3, 4))
+// res47: Int = 9
+combineAll(List("foo", "bar"))
+// res48: String = "foobar"
+```
+Defining a type class like `Monoid` in a language like Scala requires parameterised types (generics). Defining parameterised type classes requires parameterised types that are themselves parameterised - higher kinded types (HKTs). Very few mainstream programming languages support HKTs, but Scala is one of them. These can be used to define type classes like `Functor` and `Monad`.
+```scala
+def doubleAll[F[_]: Functor](fi: F[Int]): F[Int] =
+    fi map (_ * 2)
+
+doubleAll(List(1, 2, 3))
+// res49: List[Int] = List(2, 4, 6)
+doubleAll(Vector(2, 3, 4))
+// res50: Vector[Int] = Vector(4, 6, 8)
+doubleAll(Option(3))
+// res51: Option[Int] = Some(6)
+```
+
+
+* Streams?
+* Look at my FPS notes for inspiration...
+
+* SBT - console
+* Scastie?? Scala in the browser thing? Scala tutorials, intros, exercises, etc.
+
