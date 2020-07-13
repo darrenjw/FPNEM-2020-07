@@ -31,9 +31,10 @@ The material for the session are given below. To follow along, most of the examp
 
 * If you haven't been following along, maybe now would be a good time to reproduce the examples in a Scala REPL.
 * To learn more, [Scala exercises](https://www.scala-exercises.org/) is a fast way to start getting to grips with the [standard library](https://www.scala-exercises.org/std_lib/), or commonly used libraries such as [cats](https://www.scala-exercises.org/cats/) or [monocle](https://www.scala-exercises.org/monocle/). 
+* To create a new Scala `sbt` project, use a template. eg. `sbt new darrenjw/fps.g8` will generate a template project with a dependency on some commonly used FP libraries.
 
 ## My Scala courses
 
-* [Scala for statistical computing and data science](https://github.com/darrenjw/scala-course) - aimed at statisticians and data scientists transitioning to Scala from R or Python - all essential materials freely available
-* [Category theory for pure functional programming in Scala](https://github.com/darrenjw/fps-course) - a course for experienced Scala developers wanting to adopt a more principled, functional programing style
+* [Scala for statistical computing and data science](https://github.com/darrenjw/scala-course) - aimed at statisticians and data scientists transitioning to Scala from R or Python - all essential materials are freely available
+* [Category theory for pure functional programming in Scala](https://github.com/darrenjw/fps-course) - a course for experienced Scala developers wanting to adopt a more principled, functional programing style - some exercises and code fragments are available
 

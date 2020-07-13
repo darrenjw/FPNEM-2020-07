@@ -106,7 +106,7 @@ pair("foo", "bar")
 pair[Double] _
 // res14: (Double, Double) => (Double, Double) = <function2>
 (pair[Double] _).curried
-// res15: Double => Double => (Double, Double) = scala.Function2$$Lambda$5625/1734739524@4646f674
+// res15: Double => Double => (Double, Double) = scala.Function2$$Lambda$5620/749108285@17066ac1
 ```
 The return type of a method or function can usually be inferred, but it is usually considered good practice to declare it.
 
