@@ -11,10 +11,10 @@
 
 Scala has mutable variables and immutable values, and optional type inference.
 ```scala
-var v = 5
-// v: Int = 5
-v = v + 1
-v
+var z = 5
+// z: Int = 5
+z = z + 1
+z
 // res1: Int = 6
 
 val x = 5
@@ -106,7 +106,7 @@ pair("foo", "bar")
 pair[Double] _
 // res14: (Double, Double) => (Double, Double) = <function2>
 (pair[Double] _).curried
-// res15: Double => Double => (Double, Double) = scala.Function2$$Lambda$5615/833034829@5f77e780
+// res15: Double => Double => (Double, Double) = scala.Function2$$Lambda$5627/1206619463@472063ed
 ```
 The return type of a method or function can usually be inferred, but it is usually considered good practice to declare it.
 
@@ -222,7 +222,6 @@ v flatMap {vi => (v map {vj => (vi, vj)})}
 //   (4, 4)
 // )
 ```
-
 
 ## Scans and folds
 

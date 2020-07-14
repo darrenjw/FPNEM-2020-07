@@ -11,9 +11,9 @@
 
 Scala has mutable variables and immutable values, and optional type inference.
 ```scala mdoc
-var v = 5
-v = v + 1
-v
+var z = 5
+z = z + 1
+z
 
 val x = 5
 x

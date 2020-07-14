@@ -1,7 +1,7 @@
 
-var v = 5
-v = v + 1
-v
+var z = 5
+z = z + 1
+z
 
 val x = 5
 x
