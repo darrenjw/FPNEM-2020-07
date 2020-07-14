@@ -32,6 +32,7 @@ The material for the session are given below. To follow along, most of the examp
 * If you haven't been following along, maybe now would be a good time to reproduce the examples in a Scala REPL.
 * To learn more, [Scala exercises](https://www.scala-exercises.org/) is a fast way to start getting to grips with the [standard library](https://www.scala-exercises.org/std_lib/), or commonly used libraries such as [cats](https://www.scala-exercises.org/cats/) or [monocle](https://www.scala-exercises.org/monocle/). 
 * To create a new Scala `sbt` project, use a template. eg. `sbt new darrenjw/fps.g8` will generate a template project with a dependency on some commonly used FP libraries.
+* If you are interested in Scala for functional programming, check out the [typelevel libraries](https://typelevel.org/).
 
 ## My Scala courses
 

@@ -106,7 +106,7 @@ pair("foo", "bar")
 pair[Double] _
 // res14: (Double, Double) => (Double, Double) = <function2>
 (pair[Double] _).curried
-// res15: Double => Double => (Double, Double) = scala.Function2$$Lambda$5620/749108285@17066ac1
+// res15: Double => Double => (Double, Double) = scala.Function2$$Lambda$5604/2083101184@73bbe9d9
 ```
 The return type of a method or function can usually be inferred, but it is usually considered good practice to declare it.
 
@@ -336,7 +336,7 @@ Parameterising functions this way ensures that you don't use any idiosyncratic f
 
 ## Conclusions
 
-* Scala is a very powerful strongly typed language, with type inference, higher order functions and higher-kinded types, and excellent support for immutable values and data structures, and functional programming more generally
+* Scala is a very powerful strongly typed language, with type inference, higher order functions and higher-kinded types, monadic for-expressions, and excellent support for immutable values and data structures, type classes, and functional programming more generally
 * It also has a very mature tooling ecosystem, with excellent build tools, IDEs, testing frameworks, etc.
-* It benefits from the JVM ecosystem, including the Sonatype central repository, for the sharing of code-signed libraries
-* Scala is not a pure functional language, but an increasing number of Scala developers are embracing a pure functional approach to program development in Scala, and are creating a library ecosystem to support this
+* It benefits from the JVM ecosystem, including the [Sonatype central repository](https://search.maven.org/), for the sharing of code-signed libraries
+* Scala is not a pure functional language, but an increasing number of Scala developers are embracing a pure functional approach to program development in Scala, and are creating a [library ecosystem](https://typelevel.org/) to support this

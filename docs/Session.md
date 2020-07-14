@@ -260,7 +260,7 @@ Parameterising functions this way ensures that you don't use any idiosyncratic f
 
 ## Conclusions
 
-* Scala is a very powerful strongly typed language, with type inference, higher order functions and higher-kinded types, and excellent support for immutable values and data structures, and functional programming more generally
+* Scala is a very powerful strongly typed language, with type inference, higher order functions and higher-kinded types, monadic for-expressions, and excellent support for immutable values and data structures, type classes, and functional programming more generally
 * It also has a very mature tooling ecosystem, with excellent build tools, IDEs, testing frameworks, etc.
-* It benefits from the JVM ecosystem, including the Sonatype central repository, for the sharing of code-signed libraries
-* Scala is not a pure functional language, but an increasing number of Scala developers are embracing a pure functional approach to program development in Scala, and are creating a library ecosystem to support this
+* It benefits from the JVM ecosystem, including the [Sonatype central repository](https://search.maven.org/), for the sharing of code-signed libraries
+* Scala is not a pure functional language, but an increasing number of Scala developers are embracing a pure functional approach to program development in Scala, and are creating a [library ecosystem](https://typelevel.org/) to support this
