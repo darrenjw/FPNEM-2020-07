@@ -20,6 +20,12 @@ Materials for "An evening of Scala" at the [FPNE Meetup](https://www.meetup.com/
 
 The material for the session are given below. To follow along, most of the examples can be easily replicated using [Scastie](https://scastie.scala-lang.org) in the browser (in *worksheet* mode). Or better, if you have `sbt` (which can be installed via the link above), clone this repo and run `sbt console` from *this* directory. You will get a REPL with everything pre-configured ready to go.
 
+Note that if you are using **Scastie**, in addition to switching to worksheet mode, to get the later examples to work, you will need to change your build settings to Scala 2.12 (rather than 2.13), and add a dependency on Cats by adding:
+```scala
+libraryDependencies += "org.typelevel" %% "cats-core" % "2.0.0"
+```
+to the extra Sbt configuration.
+
 ### Materials
 
 * [Markdown document](target/mdoc/Session.md) - read along
