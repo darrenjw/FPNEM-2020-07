@@ -2,7 +2,7 @@
 
 ## An evening of Scala
 
-* A quick look at Scala from a functional programmer's perspective
+* A first look at Scala from a functional programming perspective
 * Darren Wilkinson - [darrenjw.github.io](https://darrenjw.github.io/)
 
 # Classes, objects and values
@@ -135,6 +135,20 @@ for {
   vi <- v
   vj <- v
 } yield (vi, vj)
+```
+
+## `for` desugaring
+
+Note that
+```scala mdoc:silent
+for {
+  vi <- v
+  vj <- v
+} yield (vi, vj)
+```
+is just syntactic sugar for
+```scala mdoc
+v flatMap {vi => (v map {vj => (vi, vj)})}
 ```
 
 ## Scans and folds

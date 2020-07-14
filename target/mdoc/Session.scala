@@ -80,6 +80,15 @@ for {
 } yield (vi, vj)
 
 
+for {
+  vi <- v
+  vj <- v
+} yield (vi, vj)
+
+
+v flatMap {vi => (v map {vj => (vi, vj)})}
+
+
 v reduce (_ + _)
 v reduce (_ * _)
 v.foldLeft(0)(_ + _)

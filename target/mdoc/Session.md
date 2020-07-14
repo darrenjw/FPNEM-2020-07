@@ -2,7 +2,7 @@
 
 ## An evening of Scala
 
-* A quick look at Scala from a functional programmer's perspective
+* A first look at Scala from a functional programming perspective
 * Darren Wilkinson - [darrenjw.github.io](https://darrenjw.github.io/)
 
 # Classes, objects and values
@@ -106,7 +106,7 @@ pair("foo", "bar")
 pair[Double] _
 // res14: (Double, Double) => (Double, Double) = <function2>
 (pair[Double] _).curried
-// res15: Double => Double => (Double, Double) = scala.Function2$$Lambda$5604/2083101184@73bbe9d9
+// res15: Double => Double => (Double, Double) = scala.Function2$$Lambda$5615/833034829@5f77e780
 ```
 The return type of a method or function can usually be inferred, but it is usually considered good practice to declare it.
 
@@ -191,20 +191,53 @@ for {
 // )
 ```
 
+## `for` desugaring
+
+Note that
+```scala
+for {
+  vi <- v
+  vj <- v
+} yield (vi, vj)
+```
+is just syntactic sugar for
+```scala
+v flatMap {vi => (v map {vj => (vi, vj)})}
+// res31: Vector[(Int, Int)] = Vector(
+//   (1, 1),
+//   (1, 2),
+//   (1, 3),
+//   (1, 4),
+//   (2, 1),
+//   (2, 2),
+//   (2, 3),
+//   (2, 4),
+//   (3, 1),
+//   (3, 2),
+//   (3, 3),
+//   (3, 4),
+//   (4, 1),
+//   (4, 2),
+//   (4, 3),
+//   (4, 4)
+// )
+```
+
+
 ## Scans and folds
 
 The collections also support *scans*, *folds* and *reductions*.
 ```scala
 v reduce (_ + _)
-// res30: Int = 10
-v reduce (_ * _)
-// res31: Int = 24
-v.foldLeft(0)(_ + _)
 // res32: Int = 10
+v reduce (_ * _)
+// res33: Int = 24
+v.foldLeft(0)(_ + _)
+// res34: Int = 10
 v.scanLeft(0)(_ + _)
-// res33: Vector[Int] = Vector(0, 1, 3, 6, 10)
+// res35: Vector[Int] = Vector(0, 1, 3, 6, 10)
 v.foldLeft(0.0)(_ + _)
-// res34: Double = 10.0
+// res36: Double = 10.0
 ```
 
 # Recursion
@@ -218,13 +251,13 @@ def logFactorial(n: Int): Double =
 	if (n <= 1) 0.0 else math.log(n)+logFactorial(n-1)
 
 logFactorial(4)
-// res35: Double = 3.1780538303479453
+// res37: Double = 3.1780538303479453
 logFactorial(100)
-// res36: Double = 363.7393755555636
+// res38: Double = 363.7393755555636
 logFactorial(1000)
-// res37: Double = 5912.128178488171
+// res39: Double = 5912.128178488171
 logFactorial(10000)
-// res38: Double = 82108.92783681415
+// res40: Double = 82108.92783681415
 ```
 Eventually this will blow the stack, since it is not tail-recursive (the function modifies the result of the recursive call). 
 
@@ -237,9 +270,9 @@ def logFact(n: Int, acc: Double = 0.0): Double =
     if (n <= 1) acc else logFact(n-1, math.log(n) + acc)
 
 logFact(10000)
-// res39: Double = 82108.92783681446
+// res41: Double = 82108.92783681446
 logFact(10000000)
-// res40: Double = 1.511809654875759E8
+// res42: Double = 1.511809654875759E8
 ```
 Note that the `tailrec` annotation is optional - the compiler will eliminate the tail call regardless of whether it is specified. The annotation ensures that an error will be thrown at compile time in the event that for some reason the compiler can not eliminate the tail call. This is typically better than discovering this fact at run time.
 
@@ -253,14 +286,14 @@ val naturals = Stream.iterate(1)(_ + 1)
 ```
 ```scala
 naturals.take(8).toList
-// res41: List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8)
+// res43: List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8)
 ```
 ```scala
 val triangular = naturals.scanLeft(0)(_ + _).drop(1)
 ```
 ```scala
 triangular.take(8).toList
-// res42: List[Int] = List(1, 3, 6, 10, 15, 21, 28, 36)
+// res44: List[Int] = List(1, 3, 6, 10, 15, 21, 28, 36)
 ```
 
 ## Fibonacci numbers
@@ -271,7 +304,7 @@ def fib(a: Int = 1, b: Int = 1): Stream[Int] =
 ```
 ```scala
 fib().take(8).toList
-// res43: List[Int] = List(1, 1, 2, 3, 5, 8, 13, 21)
+// res45: List[Int] = List(1, 1, 2, 3, 5, 8, 13, 21)
 ```
 This is actually stack-safe, though it might not be immediately obvious why. Again, you might prefer to use a proper streaming data library.
 
@@ -290,13 +323,13 @@ import cats.implicits._
 import cats.syntax._
 
 3 |+| 4
-// res44: Int = 7
+// res46: Int = 7
 "foo" |+| "bar"
-// res45: String = "foobar"
+// res47: String = "foobar"
 List(1, 2) |+| List(3, 4, 5)
-// res46: List[Int] = List(1, 2, 3, 4, 5)
+// res48: List[Int] = List(1, 2, 3, 4, 5)
 Map("a" -> 1, "b" -> 2) |+| Map("b" -> 3, "c" -> 4)
-// res47: Map[String, Int] = Map("b" -> 5, "c" -> 4, "a" -> 1)
+// res49: Map[String, Int] = Map("b" -> 5, "c" -> 4, "a" -> 1)
 ```
 
 ## Monoid type class constraint
@@ -308,9 +341,9 @@ def combineAll[A: Monoid](la: List[A]): A = la match {
 }
 
 combineAll(List(2, 3, 4))
-// res48: Int = 9
+// res50: Int = 9
 combineAll(List("foo", "bar"))
-// res49: String = "foobar"
+// res51: String = "foobar"
 ```
 
 ## Functor
@@ -324,11 +357,11 @@ def doubleAll[F[_]: Functor](fi: F[Int]): F[Int] =
     fi map (_ * 2)
 
 doubleAll(List(1, 2, 3))
-// res50: List[Int] = List(2, 4, 6)
+// res52: List[Int] = List(2, 4, 6)
 doubleAll(Vector(2, 3, 4))
-// res51: Vector[Int] = Vector(4, 6, 8)
+// res53: Vector[Int] = Vector(4, 6, 8)
 doubleAll(Option(3))
-// res52: Option[Int] = Some(6)
+// res54: Option[Int] = Some(6)
 ```
 Parameterising functions this way ensures that you don't use any idiosyncratic feature of the particular container type that is being used, and will render trivial the switching of the container type in some later refactor of the code.
 
